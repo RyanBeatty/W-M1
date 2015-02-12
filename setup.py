@@ -3,7 +3,8 @@ from setuptools import setup
 dependecies = [
 	"feedparser",
     "beautifulsoup4",
-    "requests"
+    "requests",
+    "Flask",
 ]
 
 setup(
