@@ -33,7 +33,6 @@ def deliveryListAll():
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     payload = {}
     r = requests.get(url, data=payload, headers=headers)
-    print(r.url)
     return r.json()
 
 # Lists ongoing deliveries for a given user
@@ -60,7 +59,6 @@ def deliveryLocation( delivery_id ):
     payload = {}
     r = requests.get(url, data=payload, headers=headers)
     resp = r.json()
-    prettyprint(resp)
     if resp['complete'] == True:
         return {'completed':'true'}
     else:
