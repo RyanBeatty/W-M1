@@ -19,11 +19,17 @@ def getItemData( url ):
     description = soup.find(id="postingbody").text
     picwrap = soup.find_all("img")                                 #if theres nothing in the array no pic
     mapwrap = soup.find_all(href=re.compile("maps.google.com"))    #if theres nothing in the array, no map
+    replylink = soup.find(id="replylink")
+    emailRequest = requests.get("http://norfolk.craigslist.com" + replylink.get('href'))
+    emailRequestData = emailRequest.text
+    emailSoup = BeautifulSoup(emailRequestData)
+    replyEmail = emailSoup.find_all(class_="anonemail")[0].text
     returnData = { }
     returnData['title'] = title
     returnData['description'] = description
     returnData['pictures'] = picwrap
     returnData['map'] = mapwrap
+    returnData['replyemail'] = replyEmail
     return returnData
 
 
