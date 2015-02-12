@@ -34,7 +34,7 @@ def getItemData( url ):
 
 
 def main():
-    arr = getItemData("norfolk.craigslist.org/zip/4888788006.html")
+    arr = getItemData("norfolk.craigslist.org/zip/4888009720.html")
     print(arr)
 
 
