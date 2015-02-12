@@ -32,6 +32,7 @@ def deliveryListAll():
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     payload = {}
     r = requests.get(url, data=payload, headers=headers)
+    print(r.url)
     return r.json()
 
 # Lists ongoing deliveries for a given user
@@ -43,6 +44,7 @@ def deliveryListOngoing():
     r = requests.get(url, data=payload, headers=headers)
     return r.json()
 
+# Show details of a given delivery, USE THIS FOR STATUS/LAT/LNG AS WELL
 def deliveryDetails( delivery_id ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+delivery_id
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
@@ -50,12 +52,19 @@ def deliveryDetails( delivery_id ):
     r = requests.get(url, data=payload, headers=headers)
     return r.json()
 
+# Note: deliveries can only be cancelled prior to pickup
 def deliveryCancel( delivery_id ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+ delivery_id + '/cancel'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     payload = {}
     r = requests.post(url, data=payload, headers=headers)
     return r.json()
+
+def deliveryDeleteAll():
+    deliveries = deliveryListAll()["data"]
+    for element in deliveries:
+        deliveryCancel(element['id'])
+
 
 def deliveryReturn():
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+ delivery_id + '/return'
@@ -64,10 +73,15 @@ def deliveryReturn():
     r = requests.post(url, data=payload, headers=headers)
     return r.json()
 
+def prettyprint(inputtext):
+    print json.dumps(inputtext, indent=4, sort_keys=True)
+
 def main():
-    deliveryInfo = deliveryQuote()
-    placedeliv = deliveryPlace(deliveryInfo['id'])
-    print(deliveryListOngoing())
+    # deliveryInfo = deliveryQuote()
+    # placedeliv = deliveryPlace(deliveryInfo['id'])
+    # print json.dumps(deliveryListAll(), indent=4, sort_keys=True)
+    prettyprint(deliveryDetails('del_KCoBvWs3IQpkG-'))
+
 
 
 if __name__ == "__main__":
