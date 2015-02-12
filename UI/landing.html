@@ -26,20 +26,44 @@
         margin: 0;
         background-size: 100%;
         background-attachment: fixed;
-        background-image: url('img/pigeon.jpg');
+        background-image: url('img/landing_couch.jpg');
       }
       #logo {
-        width: 120px;
+        width: 220px;
         position: absolute;
-        top: 40px;
-        left: 40px;
+        top: 20px;
+        left: 60px;
+      }
+      .jumbotron {
+        height: 140px;
+        margin-top: 400px;
+        background-color: rgba(0,0,0,0.0);
+      }
+      .form-control {
+        font-size: 30px;
+        height: 60px;
+        background-color: rgba(0,0,0,0.3);
       }
     </style>
 
   <body>
 
     <!-- Logo -->
-    <img id="logo" src="graphics/curb_to_me_logo.png" />
+    <img id="logo" src="graphics/curb_to_me_logo_side.png" />
+
+     <div class="container">
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <p id="title">Curbto.me is a service to magically scour craigslist and deliver <b>free shit</b>.</p>
+
+      <div class="jumbotron">
+        <div class="form-group">
+          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Where are you?">
+        </div>
+      </div>
+
+    </div> <!-- /container -->
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="../../dist/js/vendor/jquery.min.js"></script>
