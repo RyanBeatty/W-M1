@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Loading Bootstrap -->
-    <link href="Flat-UI/dist/css/vendor/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/Flat-UI/dist/css/vendor/bootstrap.min.css" rel="stylesheet">
 
     <!-- Loading Flat UI -->
-    <link href="Flat-UI/dist/css/flat-ui.css" rel="stylesheet">
+    <link href="/static/Flat-UI/dist/css/flat-ui.css" rel="stylesheet">
 
     <link rel="shortcut icon" href="Flat-UI/dist/img/favicon.ico">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -62,8 +62,8 @@
       .typed-cursor {
         font-family: 'Montserrat', sans-serif;
         display: inline-block;
-        font-size: 24px;
-        color: #fff;
+        font-size: 30px;
+        color: #48C9B0;
         margin-bottom: 24px;
         margin-top: 0;
         opacity: 1;
@@ -92,7 +92,7 @@
   <body>
 
     <!-- Logo -->
-    <img id="logo" src="graphics/white_logo.png" />
+    <img id="logo" src="/static/graphics/white_logo.png" />
 
      <div class="container">
 
@@ -101,7 +101,7 @@
 
       <div class="jumbotron">
         <div class="form-group">
-          <p id="title">Curbto.me is a service to magically scour craigslist and deliver  <span class="options"></span></p>
+          <p id="title">CurbToMe is a service to magically scour craigslist and deliver  <span class="options"></span></p>
           <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Where are you?">
         </div>
       </div>
@@ -117,11 +117,11 @@
     <script src="../assets/js/application.js"></script>
 
   </body>
-      <script type="text/javascript" src="js/typed.js"> </script>
+      <script type="text/javascript" src="/static/js/typed.js"> </script>
 <script>
     $(function(){
         $(".options").typed({
-            strings: ["couches.", "tvs.", "fridges.", "mattresses.","partners.", "trucks.", "babes",  "free shit."],
+            strings: ["couches.", "tvs.", "fridges.", "mattresses.","partners.", "trucks.", "babes.",  "free shit."],
             typeSpeed: 30
         });
     });
