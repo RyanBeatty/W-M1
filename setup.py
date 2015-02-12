@@ -1,7 +1,7 @@
 from setuptools import setup
 
 dependecies = [
-	"requests",
+	"feedparser"
 ]
 
 setup(
