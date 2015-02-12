@@ -1,7 +1,9 @@
 from setuptools import setup
 
 dependecies = [
-	"feedparser"
+	"feedparser",
+    "beautifulsoup4",
+    "requests"
 ]
 
 setup(
