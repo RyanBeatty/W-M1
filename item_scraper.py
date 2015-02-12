@@ -15,9 +15,9 @@ def getItemHTML( url ):
 def getItemData( url ):
     data = getItemHTML( url )
     soup = BeautifulSoup(data)
-    title = soup.title.string
-    description = soup.find(id="postingbody").text
-    picwrap = soup.find_all("img")                                 #if theres nothing in the array no pic
+    # title = soup.title.string
+    # description = soup.find(id="postingbody").text
+    # picwrap = soup.find_all("img")                                 #if theres nothing in the array no pic
     mapwrap = soup.find_all(href=re.compile("maps.google.com"))    #if theres nothing in the array, no map
     replylink = soup.find(id="replylink")
     emailRequest = requests.get("http://norfolk.craigslist.com" + replylink.get('href'))
@@ -25,16 +25,17 @@ def getItemData( url ):
     emailSoup = BeautifulSoup(emailRequestData)
     replyEmail = emailSoup.find_all(class_="anonemail")[0].text
     returnData = { }
-    returnData['title'] = title
-    returnData['description'] = description
-    returnData['pictures'] = picwrap
+    # returnData['title'] = title
+    # returnData['description'] = description
+    # returnData['pictures'] = picwrap
     returnData['map'] = mapwrap
     returnData['replyemail'] = replyEmail
     return returnData
 
 
 def main():
-    arr = getItemData("norfolk.craigslist.org/zip/4888401135.html")
+    arr = getItemData("norfolk.craigslist.org/zip/4888788006.html")
+    print(arr)
 
 
 if __name__ == "__main__":
