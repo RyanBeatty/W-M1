@@ -53,7 +53,7 @@ def delivery_progress():
     info['dropoff_address'] = req.getlist('dropoff_address')[0]
     info['manifest'] = req.getlist('manifest')[0]
     delivery = postmates.delivery_place(info)
-    return render_template("delivery.html", deliveryObject = info)
+    return render_template("delivery.html", backgroundInfo = info, deliveryObject = delivery)
 
 @app.route("/test")
 def test():

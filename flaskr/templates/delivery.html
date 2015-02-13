@@ -46,11 +46,14 @@
         // }
       }
       //Test loop for updating the location
-
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
   </head>
   <body>
+    {{ deliveryObject }}
+    <br>
+    {{ backgroundInfo }}
     <div id="map-canvas"></div>
+    
   </body>
 </html>
