@@ -14,7 +14,7 @@ def index():
 def search():
 	site = request.args.get("site", "norfolk")
 	term = request.args.get("term", "")
-	return render_template("search.html", index_list=rss_scraper.parse_rss_feed(site, term))
+	return render_template("search.html", current_site=site, index_list=rss_scraper.parse_rss_feed(site, term))
 
 @app.route("/item_list", methods=["GET"])
 def item_list():

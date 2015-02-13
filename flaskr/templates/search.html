@@ -80,7 +80,8 @@
     <div class="container">
       <div  class="jumbotron">
           <form action="/search" method="GET">
-            <input type="text" class="form-control" name="site" id="exampleInputEmail1" placeholder="Search for ...">
+            <input type="text" class="form-control" name="site" id="exampleInputEmail1" placeholder="Location" value="{{ current_site }}" required>
+            <input type="text" class="form-control" name="term" id="exampleInputEmail1" placeholder="Search for ...">
           </form>
       </div>
 
