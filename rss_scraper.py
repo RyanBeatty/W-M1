@@ -46,6 +46,7 @@ def getItemData( url ):
     data = getItemHTML( url )
     soup = BeautifulSoup(data)                                #if theres nothing in the array no pic
     mapwrap = soup.find_all(href=re.compile("maps.google.com"))    #if theres nothing in the array, no map
+    address = soup.findAll("div", { "class" : "mapaddress" })[0].text
     replylink = soup.find(id="replylink")
     emailRequest = requests.get("http://norfolk.craigslist.com" + replylink.get('href'))
     emailRequestData = emailRequest.text
@@ -54,7 +55,8 @@ def getItemData( url ):
     returnData = { }
     returnData['map'] = mapwrap
     returnData['replyemail'] = replyEmail
+    returnData['address'] = address
     return returnData
 
 if __name__ == "__main__":
-	parse_rss_feed()
+	print(getItemData('norfolk.craigslist.org/zip/4888009720.html'))
