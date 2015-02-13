@@ -112,15 +112,16 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
             <h4 class="modal-title" id="myModalLabel">Submit for Delivery</h4>
             </div>
-            <form action="/deliverystatus" method="POST">
+            <form action="/order" method="POST">
             <div class="modal-body">
               <div class="form-group">
-                <input type="text" value="" placeholder="Pickup Name" class="form-control" required/>
-                <input type="text" value="" placeholder="Pickup Address" class="form-control" />
-                <input type="text" value="" placeholder="Pickup Phone" class="form-control" />
-                <input type="text" value="" placeholder="Dropoff Name" class="form-control" />
-                <input type="text" value="" placeholder="Dropoff Address" class="form-control" />
-                <input type="text" value="" placeholder="Dropoff Phone" class="form-control" />
+                <input name="item" type="text" value="" placeholder="Item" class="form-control" required/>
+                <input name="pickup_name" type="text" value="" placeholder="Pickup Name" class="form-control" required/>
+                <input name="pickup_order" type="text" value="" placeholder="Pickup Address" class="form-control" />
+                <input name="pickup_phone" type="text" value="" placeholder="Pickup Phone" class="form-control" />
+                <input name="dropoff_name" type="text" value="" placeholder="Dropoff Name" class="form-control" />
+                <input name="dropoff_address" type="text" value="" placeholder="Dropoff Address" class="form-control" />
+                <input name="dropoff_phone" type="text" value="" placeholder="Dropoff Phone" class="form-control" />
               </div>
             </div>
             <div class="modal-footer">
