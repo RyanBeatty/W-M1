@@ -190,9 +190,11 @@
     <img id="logo" src="../static/img/logo.png" />
     <div class="container">
       <div  class="jumbotron">
-          <form action="/search" method="GET">
-            <input type="text" class="form-control" name="site" id="location" placeholder="Location" value="{{ current_site }}" required>
-            <input type="text" class="form-control" name="term" id="search-box" placeholder="Search for ...">
+          <form id="location" action="/search" method="GET">
+            <input type="text" class="form-control" name="site"  placeholder="Location" value="{{ current_site }}" required>
+          </form>
+          <form id="search-box" action="/search" method="GET">
+             <input type="text" class="form-control" name="term"  placeholder="Search for ...">
           </form>
       </div>
     </div> 
