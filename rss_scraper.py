@@ -32,7 +32,7 @@ def parse_rss_feed(site, term=""):
 # Get the html for a specific webpage
 
 def getItemHTML( url ):
-    resp = requests.get("http://" + url)
+    resp = requests.get(url)
     data = resp.text
     return data
 
@@ -42,15 +42,35 @@ def getItemData( url ):
     data = getItemHTML( url )
     soup = BeautifulSoup(data)                                #if theres nothing in the array no pic
     mapwrap = soup.find_all(href=re.compile("maps.google.com"))    #if theres nothing in the array, no map
+    if(len(mapwrap) > 0):
+        mapwrap = mapwrap[0].get('href')
+    else:
+        mapwrap = None
+    mapDiv = soup.find(id="map")
+    coordinates = {}
+    if mapDiv != None:
+        lat = mapDiv.get("data-latitude")
+        lng = mapDiv.get("data-longitude")
+        coordinates['lat'] = lat
+        coordinates['lng'] = lng
     replylink = soup.find(id="replylink")
     emailRequest = requests.get("http://norfolk.craigslist.com" + replylink.get('href'))
     emailRequestData = emailRequest.text
     emailSoup = BeautifulSoup(emailRequestData)
-    replyEmail = emailSoup.find_all(class_="anonemail")[0].text
+    replyEmail = emailSoup.find_all(class_="anonemail")
+    if len(replyEmail) > 0:
+        replyEmail = replyEmail[0].text
+    addressArray = soup.findAll("div", { "class" : "mapaddress" })
+    if len(addressArray) > 0:
+        address = addressArray[0].text
+    else:
+        address = None
     returnData = { }
     returnData['map'] = mapwrap
     returnData['replyemail'] = replyEmail
+    returnData['address'] = address
+    returnData['coordinates'] = coordinates
     return returnData
 
 if __name__ == "__main__":
-	parse_rss_feed()
+	print(getItemData('http://norfolk.craigslist.org/zip/4889818045.html'))

@@ -4,32 +4,137 @@
     <meta charset="utf-8">
     <title>Curbto.me - free shit, delivered.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <!-- Loading Bootstrap -->
     <link href="../static/Flat-UI/dist/css/vendor/bootstrap.min.css" rel="stylesheet">
 
     <!-- Loading Flat UI -->
     <link href="../static/Flat-UI/dist/css/flat-ui.css" rel="stylesheet">
-
     <link rel="shortcut icon" href="../static/Flat-UI/dist/img/favicon.ico">
-  </head>
-  <body>
 
+
+  
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="../../dist/js/vendor/html5shiv.js"></script>
+      <script src="../../dist/js/vendor/respond.min.js"></script>
+    <![endif]-->
+    <script>
+
+    function populateEmailLinks(inputUrl){
+      $("#gmailLink").attr({'href':'https://mail.google.com/mail/?view=cm&fs=1&to=kbffz-4887774153%40sale.craigslist.org&su=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
+      $("#yahooLink").attr({'href':'http://compose.mail.yahoo.com/?to=kbffz-4887774153%40sale.craigslist.org&subj=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
+      $("#hotmailLink").attr({'href':'https://mail.live.com/default.aspx?rru=compose&to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
+      $("#aolLink").attr({'href':'http://mail.aol.com/mail/compose-message.aspx?to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
+    }
+
+
+    function showTypeform(inputUrl, item){
+      var options = {
+          "backdrop" : "static"
+      }
+      $(document).ready(function(){
+        //Making sure the correct information is available when placing delivery/allowing navigation
+        $("#placeDelivery").unbind("click");
+        $("#contactOwner").unbind("click");
+        $("#placeDelivery").click(function(){
+          $("#item").val(item);
+          $("#contactModal").modal('hide');
+          $("#deliveryModal").modal(options);
+          $("#deliveryModal > .modal-dialog").css("z-index", "1500");
+        });
+        $("#contactOwner").click(function(){
+          $("#deliveryModal").modal('hide');
+          populateEmailLinks(inputUrl);
+          $("#contactModal").modal(options);
+          $("#contactModal > .modal-dialog").css("z-index", "1500");
+        })
+
+        $.ajax({
+          url: '/item_info',
+          data: {
+            url: inputUrl
+          },
+          error: function( data ) {
+            
+          },
+          dataType: 'json',
+          success: function(data) {
+            // console.log("success")
+            // console.log(data)
+            address = data['address']
+            var coordinates = data['coordinates'];
+            var lat = coordinates['lat'];
+            var lng = coordinates['lng']
+            if(lat && lng){
+              newAddress = getAddressFromLatLng(lat,lng, item, inputUrl);
+              // console.log("newAddress")
+              // console.log(newAddress)
+              if(newAddress){
+                address = newAddress;
+                // console.log(address)
+              }
+            }else{
+              if(!address){
+                $("#contactModal").modal(options);
+                $("#contactModal > .modal-dialog").css("z-index", "1500");
+                populateEmailLinks(inputUrl);
+              }else{
+                $("#deliveryModal").modal(options);
+                $("#deliveryModal > .modal-dialog").css("z-index", "1500");
+                $("#pAddr").val(address);
+                $("#item").val(item);
+              }
+            }
+          },
+          type: 'GET'
+        });
+      })
+    }
+
+    function getAddressFromLatLng( lat, lng , item , inputUrl){
+        var options = {
+                "backdrop" : "static"
+        }
+        geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(lat,lng);
+        geocoder.geocode({'latLng': latlng}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          if (results[0]) {
+            console.log(results[0]['formatted_address'])
+            $("#deliveryModal").modal(options);
+            $("#deliveryModal > .modal-dialog").css("z-index", "1500");
+            $("#pAddr").val(results[0]['formatted_address']);
+            $("#item").val(item);
+            // return results[0]['formatted_address'];
+          } else {
+            $("#contactModal").modal(options);
+            $("#contactModal > .modal-dialog").css("z-index", "1500");
+            populateEmailLinks(inputUrl);
+          }
+        } else {
+          return null;
+        }
+      });
+    }
+    </script>
     <style>
-      #logo {
-        width: 280px;
+         #logo {
+        width: 25%;
         position: absolute;
-        top: 40px;
-        left: 60px;
+        top: 4%;
+        left: 6%;
       }
       body {
         min-height: 2000px;
         padding-top: 70px;
       }
+      body.modal-open {
+          overflow: hidden;
+      }
       .form-control {
-        margin-top: 25px;
-        font-size: 30px;
-        height: 55px;
+        margin-top: 2%;
+        font-size: 100%;
+        height: 55%;
       }
       .jumbotron {
         margin-top: 1%;
@@ -42,34 +147,31 @@
         text-align: center;
       }
       #tile {
-        height: 450px;
+        height: 450%;
         overflow: hidden;
-        margin-bottom: 20px;
       }
       .tile {
         height: 410px;
       }
       #text-shorten {
         text-overflow: ellipsis;
-        height: 125px;
+        height: 20%;
         overflow: hidden;
+        margin-top: 5%
 
       }
       .tile-title {
         text-overflow: ellipsis;
-        height: 20px;
+        height: 1%;
         overflow: hidden;
-        margin-top: -15px;
-        padding-bottom: 20px;
+        padding-bottom: 10%;
       }
       #product-image{
-        width:auto;
-        height:auto;
-        max-width:260px;
-        max-height:200px;
-        margin-left: -12px;
-        margin-top: -12px;
-        border-radius: 5px;
+        height: 50%;
+        width: 111%;
+        margin-left: -5%;
+        margin-top: -7%;
+        border-radius: 4%;
       }
       #location {
         height: 40%;
@@ -82,7 +184,7 @@
         display: inline-block;
       }
       #deliver-button {
-        margin-top: -25px;
+        margin-top: 10%;
       }
     </style>
     <img id="logo" src="../static/img/logo.png" />
@@ -93,11 +195,72 @@
             <input type="text" class="form-control" name="term" id="search-box" placeholder="Search for ...">
           </form>
       </div>
+    </div> 
+  </head>
+  <body>
 
-    </div> <!-- /container -->
+  <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h4 class="modal-title" id="myModalLabel">Contact Owner</h4>
+            </div>
+            <div class="modal-body">
+                  <a id="gmailLink" target="_blank" href="" class="btn btn-block btn-lg btn-primary">Gmail</a>
+                  <a id="yahooLink" target="_blank" href="#fakelink" class="btn btn-block btn-lg btn-primary">Yahoo</a>
+                  <a id="hotmailLink" target="_blank" href="#fakelink" class="btn btn-block btn-lg btn-primary">Hotmail/Outlook/Live Mail</a>
+                  <a id="aolLink" target="_blank" href="#fakelink" class="btn btn-block btn-lg btn-primary">AOL</a>
+            </div>
+            <div class="modal-body">
+              Why do I need to contact the owner?
+              <br><br>
+              Getting in touch with the owner allows you to grab the information necessary for your delivery! Make sure you have the required information before placing an order to ensure quick and easy delivery
+            </div>
+
+            <div class="modal-footer">
+                <button id="placeDelivery" type="button" class="btn btn-default" >Place Delivery</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="deliveryModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h4 class="modal-title" id="myModalLabel">Submit for Delivery</h4>
+            </div>
+            <form action="/order" method="POST">
+            <div class="modal-body">
+              <div class="form-group">
+                <input id="item" name="item" type="text" value="" placeholder="Item" class="form-control" required/>
+                <input name="pickup_name" type="text" value="" placeholder="Pickup Name" class="form-control" required/>
+                <input id="pAddr" name="pickup_address" type="text" value="" placeholder="Pickup Address" class="form-control" />
+                <input name="pickup_phone" type="text" value="" placeholder="Pickup Phone" class="form-control" />
+                <input name="dropoff_name" type="text" value="" placeholder="Dropoff Name" class="form-control" />
+                <input id="dAddr" name="dropoff_address" type="text" value="" placeholder="Dropoff Address" class="form-control" />
+                <input name="dropoff_phone" type="text" value="" placeholder="Dropoff Phone" class="form-control" />
+              </div>
+            </div>
+            <div class="modal-body">
+              Why do I need this information?
+              <br><br>
+              Providing the exact parameters for your delivery is necessary to ensure accurate order processing. If you need more information, contact the owner and then submit your order!
+            </div>
+            <div class="modal-footer">
+                <button id="contactOwner" type="button" class="btn btn-default">Contact Owner</button>
+                <button id="quote" type="button" class="btn btn-default">Quote</button>
+            </div>
+            </form>
+        </div>
+    </div>
+  </div>
+
 
     <div class="container">
-      
       <div class="row">
         <div class="col-lg-12">
           <div class="row">
@@ -106,42 +269,13 @@
               <div class="tile">
                 <img id="product-image" src="{{n.picture if n.picture else '../static/graphics/just_the_couch.png'}}" alt="Compas" class="tile-image big-illustration">
                 <h3 class="tile-title">{{n.title}}</h3>
-                <p id= "text-shorten">{{n.summary}}</p>
-                <a id="deliver-button" class="typeform-share btn btn-primary btn-large btn-block" href="https://curbtome.typeform.com/to/sB9lN8" data-mode="1" target="_blank">Deliver Now!</a>
-                <script>(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'share.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}id=id+'_';if(!gi.call(d,id)){qs=ce.call(d,'link');qs.rel='stylesheet';qs.id=id;qs.href=b+'share-button.css';s=gt.call(d,'head')[0];s.appendChild(qs,s)}})()</script>
+                <p id="text-shorten">{{n.summary}}</p>
+                <a class="typeform-share btn btn-primary btn-large btn-block" onclick="showTypeform('{{n.url}}','{{n.title}}')" data-mode="1" target="_blank">Deliver Now!</a>
+                <script>
+                </script>
               </div>
             </div>
             {% endfor %}
-
-<!-- 
-            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
-              <div class="tile">
-                <img src="../static/img/toilet.jpg" alt="Compas" class="tile-image big-illustration">
-                <h3 class="tile-title">Twin Toilets</h3>
-                <p>They are sitting in the front yard and need to be gone ASAP.</p>
-                <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Deliver Now</a>
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
-              <div class="tile">
-                <img src="../static/img/chair.jpg" alt="Compas" class="tile-image big-illustration">
-                <h3 class="tile-title">Chair</h3>
-                <p>Large desk chair has a tear in the seat! </p>
-                <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Deliver Now</a>
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
-              <div class="tile">
-                <img src="../static/Flat-UI/img/icons/svg/ribbon.svg" alt="ribbon" class="tile-hot-ribbon">
-                <img src="../static/img/tv.jpg" alt="Compas" class="tile-image big-illustration">
-                <h3 class="tile-title">46" TV!!</h3>
-                <p>Big and totally free, come and get 'er!</p>
-                <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Deliver Now</a>
-              </div>
-            </div>
-             -->
           </div> <!-- /row -->
         </div>
       </div> <!-- /row -->
@@ -153,6 +287,10 @@
     <script src="../static/dist/js/flat-ui.min.js"></script>
 
     <script src="../static/docs/assets/js/application.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=false"></script>
+
 
   </body>
 </html>
