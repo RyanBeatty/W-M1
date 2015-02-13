@@ -38,22 +38,22 @@ def delivery_quote():
 
 @app.route("/delivery_progress",methods=["POST"])
 def delivery_progress():
+    req = request.form
+    print("hi")
+    print(req)
     info = {}
-    quote = postmates.delivery_quote(request.form['pickup_address'], request.form['dropoff_address'])
+    quote = postmates.delivery_quote(req['pickup_address'], req['dropoff_address'])
     info['quote_id'] = quote['id']
-    print(info)
-    info['pickup_name'] = request.form['pickup_name']
-
-    info['pickup_address'] = request.form['pickup_address']
-    print("HIIII")
-    info['pickup_phone_number'] = request.form['pickup_phone_number']
-
-    info['dropoff_name'] = request.form['dropoff_name']
-    info['dropoff_phone_number'] = request.form['dropoff_phone_number']
-    info['dropoff_address'] = request.form['dropoff_address']
-    info['manifest'] = request.form['manifest']
+    info['pickup_name'] = req.getlist('pickup_name')[0]
+    info['pickup_address'] = req.getlist('pickup_address')[0]
+    print(req.getlist('pickup_phone_number'))
+    info['pickup_phone_number'] = req.getlist('pickup_phone')[0]
+    info['dropoff_name'] = req.getlist('dropoff_name')[0]
+    info['dropoff_phone_number'] = req.getlist('dropoff_phone')[0]
+    info['dropoff_address'] = req.getlist('dropoff_address')[0]
+    info['manifest'] = req.getlist('manifest')[0]
     delivery = postmates.delivery_place(info)
-    return render_template("delivery.html", deliveryObject = delivery)
+    return render_template("delivery.html", deliveryObject = info)
 
 @app.route("/test")
 def test():
