@@ -29,8 +29,8 @@ def item_info():
 
 @app.route("/delivery_quote",methods=["GET"])
 def delivery_quote():
-    pickup = request.args.get("pickup", '')
-    dropoff = request.args.get("dropoff", '')
+    pickup = request.args.get("pickup_address", '')
+    dropoff = request.args.get("dropoff_address", '')
     if not pickup or not dropoff:
     	return json.dumps({})
     quote = postmates.delivery_quote(pickup, dropoff)
