@@ -1,7 +1,7 @@
 import requests
 import json
 
-def deliveryQuote(pickup, dropoff):
+def delivery_quote(pickup, dropoff):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/delivery_quotes'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     payload = { 'pickup_address': pickup, 'dropoff_address': dropoff}
