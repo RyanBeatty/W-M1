@@ -94,6 +94,25 @@
       $("#aolLink").attr({'href':'http://mail.aol.com/mail/compose-message.aspx?to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
     }
 
+    //Function to get the quote for delivery, and update the modal
+    function getQuote(pickupAddr, dropoffAddr){
+      $.ajax({
+        url: '/delivery_quote',
+          data: {
+            pickup_address: pickupAddr,
+            dropoff_address: dropoffAddr
+          },
+          error: function( data ) {
+            console.log("ERROR")
+            console.log(data)
+          },
+          dataType: 'json',
+          success: function( data ){
+            console.log(data)
+          }
+      });
+    }
+
 
     function showTypeform(inputUrl, item){
       var options = {
@@ -103,6 +122,7 @@
         //Making sure the correct information is available when placing delivery/allowing navigation
         $("#placeDelivery").unbind("click");
         $("#contactOwner").unbind("click");
+
         $("#placeDelivery").click(function(){
           $("#item").val(item);
           $("#contactModal").modal('hide');
@@ -116,6 +136,9 @@
           populateEmailLinks(inputUrl);
           $("#contactModal").modal(options);
           $("#contactModal > .modal-dialog").css("z-index", "1500");
+        });
+        $("#quote").click(function(){
+          getQuote($("#pAddr").val(), $("#dAddr").val());
         });
 
         $.ajax({
@@ -220,6 +243,25 @@
             <div class="modal-footer">
                 <button id="placeDelivery" type="button" class="btn btn-default" >Place Delivery</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="quoteModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h4 class="modal-title" id="myModalLabel">Quote</h4>
+            </div>
+            <div class="modal-body">
+              <div>Delivery Price:</div>
+              <h4 id="price"></h4>
+              <br><br>
+            </div>
+            <div class="modal-footer">
+                <button id="placeDelivery" type="button" class="btn btn-default" >Submit</button>
             </div>
         </div>
     </div>
