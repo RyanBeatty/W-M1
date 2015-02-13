@@ -20,9 +20,36 @@
     <![endif]-->
     <script>
 
+    function populateEmailLinks(inputUrl){
+      $("#gmailLink").attr({'href':'https://mail.google.com/mail/?view=cm&fs=1&to=kbffz-4887774153%40sale.craigslist.org&su=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
+      $("#yahooLink").attr({'href':'http://compose.mail.yahoo.com/?to=kbffz-4887774153%40sale.craigslist.org&subj=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
+      $("#hotmailLink").attr({'href':'https://mail.live.com/default.aspx?rru=compose&to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
+      $("#aolLink").attr({'href':'http://mail.aol.com/mail/compose-message.aspx?to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
+    }
+
     
-    function showTypeform(inputUrl){
+    function showTypeform(inputUrl, item){
+      var options = {
+          "backdrop" : "static"
+      }
       $(document).ready(function(){
+        //Making sure the correct information is available when placing delivery/allowing navigation
+        $("#placeDelivery").unbind("click");
+        $("#contactOwner").unbind("click");
+        $("#placeDelivery").click(function(){
+          $("#item").val(item);
+          $("#contactModal").modal('hide');
+          $("#deliveryModal").modal(options);
+          $("#deliveryModal > .modal-dialog").css("z-index", "1500");
+        });
+        $("#contactOwner").click(function(){
+          $("#deliveryModal").modal('hide');
+          populateEmailLinks(inputUrl);
+          $("#contactModal").modal(options);
+          $("#contactModal > .modal-dialog").css("z-index", "1500");
+
+        })
+
         $.ajax({
           url: '/item_info',
           data: {
@@ -36,14 +63,12 @@
             console.log("success")
             console.log(data)
             address = data['address']
-            var options = {
-                "backdrop" : "static"
-            }
+            
             var coordinates = data['coordinates'];
             var lat = coordinates['lat'];
             var lng = coordinates['lng']
             if(lat && lng){
-              newAddress = getAddressFromLatLng(lat,lng);
+              newAddress = getAddressFromLatLng(lat,lng, item, inputUrl);
               console.log("newAddress")
               console.log(newAddress)
               if(newAddress){
@@ -54,14 +79,12 @@
               if(!address){
                 $("#contactModal").modal(options);
                 $("#contactModal > .modal-dialog").css("z-index", "1500");
-                $("#gmailLink").attr({'href':'https://mail.google.com/mail/?view=cm&fs=1&to=kbffz-4887774153%40sale.craigslist.org&su=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
-                $("#yahooLink").attr({'href':'http://compose.mail.yahoo.com/?to=kbffz-4887774153%40sale.craigslist.org&subj=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
-                $("#hotmailLink").attr({'href':'https://mail.live.com/default.aspx?rru=compose&to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
-                $("#aolLink").attr({'href':'http://mail.aol.com/mail/compose-message.aspx?to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
+                populateEmailLinks(inputUrl);
               }else{
                 $("#deliveryModal").modal(options);
                 $("#deliveryModal > .modal-dialog").css("z-index", "1500");
                 $("#pAddr").val(address);
+                $("#item").val(item);
               }
             }
           },
@@ -70,7 +93,7 @@
       })
     }
 
-    function getAddressFromLatLng( lat, lng ){
+    function getAddressFromLatLng( lat, lng , item , inputUrl){
         var options = {
                 "backdrop" : "static"
         }
@@ -83,14 +106,12 @@
             $("#deliveryModal").modal(options);
             $("#deliveryModal > .modal-dialog").css("z-index", "1500");
             $("#pAddr").val(results[0]['formatted_address']);
+            $("#item").val(item);
             // return results[0]['formatted_address'];
           } else {
             $("#contactModal").modal(options);
             $("#contactModal > .modal-dialog").css("z-index", "1500");
-            $("#gmailLink").attr({'href':'https://mail.google.com/mail/?view=cm&fs=1&to=kbffz-4887774153%40sale.craigslist.org&su=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
-            $("#yahooLink").attr({'href':'http://compose.mail.yahoo.com/?to=kbffz-4887774153%40sale.craigslist.org&subj=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
-            $("#hotmailLink").attr({'href':'https://mail.live.com/default.aspx?rru=compose&to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
-            $("#aolLink").attr({'href':'http://mail.aol.com/mail/compose-message.aspx?to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
+            populateEmailLinks(inputUrl);
           }
         } else {
           return null;
@@ -108,6 +129,9 @@
       body {
         min-height: 2000px;
         padding-top: 70px;
+      }
+      body.modal-open {
+          overflow: hidden;
       }
       .form-control {
         margin-top: 2%;
@@ -190,7 +214,14 @@
                   <a id="hotmailLink" target="_blank" href="#fakelink" class="btn btn-block btn-lg btn-primary">Hotmail/Outlook/Live Mail</a>
                   <a id="aolLink" target="_blank" href="#fakelink" class="btn btn-block btn-lg btn-primary">AOL</a>
             </div>
+            <div class="modal-body">
+              Why do I need to contact the owner?
+              <br><br>
+              Getting in touch with the owner allows you to grab the information necessary for your delivery! Make sure you have the required information before placing an order to ensure quick and easy delivery
+            </div>
+
             <div class="modal-footer">
+                <button id="placeDelivery" type="button" class="btn btn-default" >Place Delivery</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -207,7 +238,7 @@
             <form action="/order" method="POST">
             <div class="modal-body">
               <div class="form-group">
-                <input name="item" type="text" value="" placeholder="Item" class="form-control" required/>
+                <input id="item" name="item" type="text" value="" placeholder="Item" class="form-control" required/>
                 <input name="pickup_name" type="text" value="" placeholder="Pickup Name" class="form-control" required/>
                 <input id="pAddr" name="pickup_address" type="text" value="" placeholder="Pickup Address" class="form-control" />
                 <input name="pickup_phone" type="text" value="" placeholder="Pickup Phone" class="form-control" />
@@ -216,8 +247,13 @@
                 <input name="dropoff_phone" type="text" value="" placeholder="Dropoff Phone" class="form-control" />
               </div>
             </div>
+            <div class="modal-body">
+              Why do I need this information?
+              <br><br>
+              Providing the exact parameters for your delivery is necessary to ensure accurate order processing. If you need more information, contact the owner and then submit your order!
+            </div>
             <div class="modal-footer">
-                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button> -->
+                <button id="contactOwner" type="button" class="btn btn-default">Contact Owner</button>
                 <input type="submit" value="Submit" placeholder="Dropoff Phone" class="btn btn-default" />
             </div>
             </form>
@@ -236,7 +272,7 @@
                 <img id="product-image" src="{{n.picture if n.picture else '../static/graphics/just_the_couch.png'}}" alt="Compas" class="tile-image big-illustration">
                 <h3 class="tile-title">{{n.title}}</h3>
                 <p id="text-shorten">{{n.summary}}</p>
-                <a class="typeform-share btn btn-primary btn-large btn-block" onclick="showTypeform('{{n.url}}')" data-mode="1" target="_blank">Deliver Now!</a>
+                <a class="typeform-share btn btn-primary btn-large btn-block" onclick="showTypeform('{{n.url}}','{{n.title}}')" data-mode="1" target="_blank">Deliver Now!</a>
                 <script>
                 </script>
               </div>
