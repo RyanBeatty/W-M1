@@ -20,6 +20,10 @@ def item_list():
 	items = rss_scraper.parse_rss_feed("norfolk")
 	return json.dumps(items)
 
+@app.route("/item_info",methods=["GET"])
+def item_info():
+    info = rss_scraper.getItemData(request.args.get("url","http://auburn.craigslist.org/zip/4877117310.html"))
+    return json.dumps(info)
 
 
 if __name__ == "__main__":
