@@ -46,11 +46,20 @@ def getItemData( url ):
         mapwrap = mapwrap[0].get('href')
     else:
         mapwrap = None
+    mapDiv = soup.find(id="map")
+    coordinates = {}
+    if mapDiv != None:
+        lat = mapDiv.get("data-latitude")
+        lng = mapDiv.get("data-longitude")
+        coordinates['lat'] = lat
+        coordinates['lng'] = lng
     replylink = soup.find(id="replylink")
     emailRequest = requests.get("http://norfolk.craigslist.com" + replylink.get('href'))
     emailRequestData = emailRequest.text
     emailSoup = BeautifulSoup(emailRequestData)
-    replyEmail = emailSoup.find_all(class_="anonemail")[0].text
+    replyEmail = emailSoup.find_all(class_="anonemail")
+    if len(replyEmail) > 0:
+        replyEmail = replyEmail[0].text
     addressArray = soup.findAll("div", { "class" : "mapaddress" })
     if len(addressArray) > 0:
         address = addressArray[0].text
@@ -60,7 +69,8 @@ def getItemData( url ):
     returnData['map'] = mapwrap
     returnData['replyemail'] = replyEmail
     returnData['address'] = address
+    returnData['coordinates'] = coordinates
     return returnData
 
 if __name__ == "__main__":
-	print(getItemData('http://norfolk.craigslist.org/zip/4888365762.html'))
+	print(getItemData('http://norfolk.craigslist.org/zip/4889818045.html'))

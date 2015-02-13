@@ -4,24 +4,22 @@
     <meta charset="utf-8">
     <title>Curbto.me - free shit, delivered.</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <!-- Loading Bootstrap -->
     <link href="../static/Flat-UI/dist/css/vendor/bootstrap.min.css" rel="stylesheet">
 
     <!-- Loading Flat UI -->
     <link href="../static/Flat-UI/dist/css/flat-ui.css" rel="stylesheet">
-
     <link rel="shortcut icon" href="../static/Flat-UI/dist/img/favicon.ico">
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
+  
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
     <!--[if lt IE 9]>
       <script src="../../dist/js/vendor/html5shiv.js"></script>
       <script src="../../dist/js/vendor/respond.min.js"></script>
     <![endif]-->
     <script>
+
     
     function showTypeform(inputUrl){
       $(document).ready(function(){
@@ -31,8 +29,7 @@
             url: inputUrl
           },
           error: function( data ) {
-            console.log("error")
-            console.log(data)
+            
           },
           dataType: 'json',
           success: function(data) {
@@ -42,20 +39,63 @@
             var options = {
                 "backdrop" : "static"
             }
-            if(!address){
-              // $("#contactModal").modal(options);
-              // $("#contactModal > .modal-dialog").css("z-index", "1500");
-              // $("#gmailLink").attr({'href':'https://mail.google.com/mail/?view=cm&fs=1&to=kbffz-4887774153%40sale.craigslist.org&su=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
-              // $("#yahooLink").attr({'href':'http://compose.mail.yahoo.com/?to=kbffz-4887774153%40sale.craigslist.org&subj=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
-              // $("#hotmailLink").attr({'href':'https://mail.live.com/default.aspx?rru=compose&to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
-              // $("#aolLink").attr({'href':'http://mail.aol.com/mail/compose-message.aspx?to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
-              $("#deliveryModal").modal(options);
-              $("#deliveryModal > .modal-dialog").css("z-index", "1500");
+            var coordinates = data['coordinates'];
+            var lat = coordinates['lat'];
+            var lng = coordinates['lng']
+            if(lat && lng){
+              newAddress = getAddressFromLatLng(lat,lng);
+              console.log("newAddress")
+              console.log(newAddress)
+              if(newAddress){
+                address = newAddress;
+                console.log(address)
+              }
+            }else{
+              if(!address){
+                $("#contactModal").modal(options);
+                $("#contactModal > .modal-dialog").css("z-index", "1500");
+                $("#gmailLink").attr({'href':'https://mail.google.com/mail/?view=cm&fs=1&to=kbffz-4887774153%40sale.craigslist.org&su=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
+                $("#yahooLink").attr({'href':'http://compose.mail.yahoo.com/?to=kbffz-4887774153%40sale.craigslist.org&subj=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
+                $("#hotmailLink").attr({'href':'https://mail.live.com/default.aspx?rru=compose&to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
+                $("#aolLink").attr({'href':'http://mail.aol.com/mail/compose-message.aspx?to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
+              }else{
+                $("#deliveryModal").modal(options);
+                $("#deliveryModal > .modal-dialog").css("z-index", "1500");
+                $("#pAddr").val(address);
+              }
             }
           },
           type: 'GET'
         });
       })
+    }
+
+    function getAddressFromLatLng( lat, lng ){
+        var options = {
+                "backdrop" : "static"
+        }
+        geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(lat,lng);
+        geocoder.geocode({'latLng': latlng}, function(results, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+          if (results[0]) {
+            console.log(results[0]['formatted_address'])
+            $("#deliveryModal").modal(options);
+            $("#deliveryModal > .modal-dialog").css("z-index", "1500");
+            $("#pAddr").val(results[0]['formatted_address']);
+            // return results[0]['formatted_address'];
+          } else {
+            $("#contactModal").modal(options);
+            $("#contactModal > .modal-dialog").css("z-index", "1500");
+            $("#gmailLink").attr({'href':'https://mail.google.com/mail/?view=cm&fs=1&to=kbffz-4887774153%40sale.craigslist.org&su=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
+            $("#yahooLink").attr({'href':'http://compose.mail.yahoo.com/?to=kbffz-4887774153%40sale.craigslist.org&subj=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
+            $("#hotmailLink").attr({'href':'https://mail.live.com/default.aspx?rru=compose&to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
+            $("#aolLink").attr({'href':'http://mail.aol.com/mail/compose-message.aspx?to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
+          }
+        } else {
+          return null;
+        }
+      });
     }
     </script>
     <style>
@@ -169,10 +209,10 @@
               <div class="form-group">
                 <input name="item" type="text" value="" placeholder="Item" class="form-control" required/>
                 <input name="pickup_name" type="text" value="" placeholder="Pickup Name" class="form-control" required/>
-                <input name="pickup_order" type="text" value="" placeholder="Pickup Address" class="form-control" />
+                <input id="pAddr" name="pickup_address" type="text" value="" placeholder="Pickup Address" class="form-control" />
                 <input name="pickup_phone" type="text" value="" placeholder="Pickup Phone" class="form-control" />
                 <input name="dropoff_name" type="text" value="" placeholder="Dropoff Name" class="form-control" />
-                <input name="dropoff_address" type="text" value="" placeholder="Dropoff Address" class="form-control" />
+                <input id="dAddr" name="dropoff_address" type="text" value="" placeholder="Dropoff Address" class="form-control" />
                 <input name="dropoff_phone" type="text" value="" placeholder="Dropoff Phone" class="form-control" />
               </div>
             </div>
@@ -213,6 +253,10 @@
     <script src="../static/dist/js/flat-ui.min.js"></script>
 
     <script src="../static/docs/assets/js/application.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=false"></script>
+
 
   </body>
 </html>
