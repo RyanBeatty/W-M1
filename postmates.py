@@ -1,10 +1,10 @@
 import requests
 import json
 
-def deliveryQuote():
+def deliveryQuote(pickup, dropoff):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/delivery_quotes'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
-    payload = {'pickup_address':'202 McAllister St. San Francisco, CA', 'dropoff_address':'101 Market St. San Francisco, CA'}
+    payload = {'pickup_address': pickup, 'dropoff_address': dropoff}
     r = requests.post(url, data=payload, headers=headers)
     return r.json()
 
@@ -29,15 +29,12 @@ def deliveryPlace( quote_id ):
 # Lists all the deliveries ever placed by a user
 def deliveryListAll():
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries'
-    # url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries?filter=ongoing'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
-    payload = {}
-    r = requests.get(url, data=payload, headers=headers)
+    r = requests.get(url, data={}, headers=headers)
     return r.json()
 
 # Lists ongoing deliveries for a given user
 def deliveryListOngoing():
-    # url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries'
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries?filter=ongoing'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     payload = {'filter':'ongoing'}
@@ -48,18 +45,16 @@ def deliveryListOngoing():
 def deliveryDetails( delivery_id ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+delivery_id
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
-    payload = {}
-    r = requests.get(url, data=payload, headers=headers)
+    r = requests.get(url, data={}, headers=headers)
     return r.json()
 
 # Return the current location of a delivery
 def deliveryLocation( delivery_id ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+delivery_id
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
-    payload = {}
-    r = requests.get(url, data=payload, headers=headers)
+    r = requests.get(url, data={}, headers=headers)
     resp = r.json()
-    if resp['complete'] == True:
+    if resp['complete']:
         return {'completed':'true'}
     else:
         return resp['courier']
@@ -68,31 +63,24 @@ def deliveryLocation( delivery_id ):
 def deliveryCancel( delivery_id ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+ delivery_id + '/cancel'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
-    payload = {}
-    r = requests.post(url, data=payload, headers=headers)
+    r = requests.post(url, data={}, headers=headers)
     return r.json()
 
 def deliveryDeleteAll():
-    deliveries = deliveryListAll()["data"]
-    for element in deliveries:
+    for element in deliveryListAll()["data"]:
         deliveryCancel(element['id'])
 
 
 def deliveryReturn():
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+ delivery_id + '/return'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
-    payload = {}
-    r = requests.post(url, data=payload, headers=headers)
+    r = requests.post(url, data={}, headers=headers)
     return r.json()
 
 def prettyprint(inputtext):
     print json.dumps(inputtext, indent=4, sort_keys=True)
 
 def main():
-    # deliveryInfo = deliveryQuote()
-    # placedeliv = deliveryPlace(deliveryInfo['id'])
-    # print json.dumps(deliveryListAll(), indent=4, sort_keys=True)
-    # print(deliveryInfo['id'])
     prettyprint(deliveryLocation('del_KCoJEqKLzrt8bk'))
 
 
