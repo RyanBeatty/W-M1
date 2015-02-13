@@ -12,9 +12,52 @@
     <link href="../static/Flat-UI/dist/css/flat-ui.css" rel="stylesheet">
 
     <link rel="shortcut icon" href="../static/Flat-UI/dist/img/favicon.ico">
-  </head>
-  <body>
 
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
+    <!--[if lt IE 9]>
+      <script src="../../dist/js/vendor/html5shiv.js"></script>
+      <script src="../../dist/js/vendor/respond.min.js"></script>
+    <![endif]-->
+    <script>
+    
+    function showTypeform(inputUrl){
+      $(document).ready(function(){
+        $.ajax({
+          url: '/item_info',
+          data: {
+            url: inputUrl
+          },
+          error: function( data ) {
+            console.log("error")
+            console.log(data)
+          },
+          dataType: 'json',
+          success: function(data) {
+            console.log("success")
+            console.log(data)
+            address = data['address']
+            var options = {
+                "backdrop" : "static"
+            }
+            if(!address){
+              // $("#contactModal").modal(options);
+              // $("#contactModal > .modal-dialog").css("z-index", "1500");
+              // $("#gmailLink").attr({'href':'https://mail.google.com/mail/?view=cm&fs=1&to=kbffz-4887774153%40sale.craigslist.org&su=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
+              // $("#yahooLink").attr({'href':'http://compose.mail.yahoo.com/?to=kbffz-4887774153%40sale.craigslist.org&subj=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
+              // $("#hotmailLink").attr({'href':'https://mail.live.com/default.aspx?rru=compose&to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
+              // $("#aolLink").attr({'href':'http://mail.aol.com/mail/compose-message.aspx?to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
+              $("#deliveryModal").modal(options);
+              $("#deliveryModal > .modal-dialog").css("z-index", "1500");
+            }
+          },
+          type: 'GET'
+        });
+      })
+    }
+    </script>
     <style>
       #logo {
         width: 280px;
@@ -93,11 +136,60 @@
             <input type="text" class="form-control" name="term" id="search-box" placeholder="Search for ...">
           </form>
       </div>
+    </div> 
+  </head>
+  <body>
 
-    </div> <!-- /container -->
+  <div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h4 class="modal-title" id="myModalLabel">Contact Owner</h4>
+            </div>
+            <div class="modal-body">
+                  <a id="gmailLink" target="_blank" href="" class="btn btn-block btn-lg btn-primary">Gmail</a>
+                  <a id="yahooLink" target="_blank" href="#fakelink" class="btn btn-block btn-lg btn-primary">Yahoo</a>
+                  <a id="hotmailLink" target="_blank" href="#fakelink" class="btn btn-block btn-lg btn-primary">Hotmail/Outlook/Live Mail</a>
+                  <a id="aolLink" target="_blank" href="#fakelink" class="btn btn-block btn-lg btn-primary">AOL</a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="deliveryModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h4 class="modal-title" id="myModalLabel">Submit for Delivery</h4>
+            </div>
+            <form action="/order" method="POST">
+            <div class="modal-body">
+              <div class="form-group">
+                <input name="item" type="text" value="" placeholder="Item" class="form-control" required/>
+                <input name="pickup_name" type="text" value="" placeholder="Pickup Name" class="form-control" required/>
+                <input name="pickup_order" type="text" value="" placeholder="Pickup Address" class="form-control" />
+                <input name="pickup_phone" type="text" value="" placeholder="Pickup Phone" class="form-control" />
+                <input name="dropoff_name" type="text" value="" placeholder="Dropoff Name" class="form-control" />
+                <input name="dropoff_address" type="text" value="" placeholder="Dropoff Address" class="form-control" />
+                <input name="dropoff_phone" type="text" value="" placeholder="Dropoff Phone" class="form-control" />
+              </div>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button> -->
+                <input type="submit" value="Submit" placeholder="Dropoff Phone" class="btn btn-default" />
+            </div>
+            </form>
+        </div>
+    </div>
+  </div>
+
 
     <div class="container">
-      
       <div class="row">
         <div class="col-lg-12">
           <div class="row">
@@ -106,13 +198,13 @@
               <div class="tile">
                 <img id="product-image" src="{{n.picture if n.picture else '../static/graphics/just_the_couch.png'}}" alt="Compas" class="tile-image big-illustration">
                 <h3 class="tile-title">{{n.title}}</h3>
-                <p id= "text-shorten">{{n.summary}}</p>
-                <a id="deliver-button" class="typeform-share btn btn-primary btn-large btn-block" href="https://curbtome.typeform.com/to/sB9lN8" data-mode="1" target="_blank">Deliver Now!</a>
-                <script>(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'share.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}id=id+'_';if(!gi.call(d,id)){qs=ce.call(d,'link');qs.rel='stylesheet';qs.id=id;qs.href=b+'share-button.css';s=gt.call(d,'head')[0];s.appendChild(qs,s)}})()</script>
+                <p id="text-shorten">{{n.summary}}</p>
+                <a class="typeform-share btn btn-primary btn-large btn-block" onclick="showTypeform('{{n.url}}')" data-mode="1" target="_blank">Deliver Now!</a>
+                <script>
+                </script>
               </div>
             </div>
             {% endfor %}
-
           </div> <!-- /row -->
         </div>
       </div> <!-- /row -->
