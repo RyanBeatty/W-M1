@@ -13,7 +13,8 @@ def index():
 @app.route("/search", methods=["GET"])
 def search():
 	site = request.args.get("site", "norfolk")
-	return render_template("search.html", index_list=rss_scraper.parse_rss_feed(site))
+	term = request.args.get("term", "")
+	return render_template("search.html", index_list=rss_scraper.parse_rss_feed(site, term))
 
 @app.route("/item_list", methods=["GET"])
 def item_list():
