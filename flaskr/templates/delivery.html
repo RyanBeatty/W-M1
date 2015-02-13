@@ -3,6 +3,7 @@
   <head>
     <title>Delivery Progress</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <meta charset="utf-8">
     <style>
       html, body {
@@ -22,37 +23,89 @@
       var map;
       var myLatlng;
       var marker;
+      var courier;
+      var geocoder;
+      console.log('{{ deliveryObject.id }}');
+      console.log('{{ backgroundInfo }}');
+      var deliveryID = '{{deliveryObject.id}}';
+
       function initialize() {
         var lat = -25.363882;
         var lng = 131.044922;
+        geocoder = new google.maps.Geocoder();
+
         myLatlng = new google.maps.LatLng(lat,lng);
         var mapOptions = {
-          zoom: 4,
+          zoom: 13,
           center: new google.maps.LatLng(lat,lng)
         };
         var image = '../static/img/just_the_couch_small.png';
         map = new google.maps.Map(document.getElementById('map-canvas'),
             mapOptions);
-        var marker = new google.maps.Marker({
-            position: myLatlng,
+        
+        codeAddress('{{ backgroundInfo.pickup_address }}');
+        codeAddress('{{ backgroundInfo.dropoff_address }}');
+        // while(1){
+        setInterval(function(){
+            $.ajax({
+            url: '/delivery_location',
+            data: {
+              id: deliveryID
+            },
+            error: function( data ) {
+              console.log(data)
+            },
+            dataType: 'json',
+            success: function(data) {
+              console.log("successs")
+              if(data){
+                if(!courier){
+                  addCourier(data['location']['lat'], data['location']['lng']);
+                }else{
+                  setCourierLocation(data['location']['lat'], data['location']['lng']);
+                }
+              }
+            },
+            type: 'GET'
+          });
+        },5000)
+      }
+
+      function addCourier( lat, lng ){
+        var latlng = new google.maps.LatLng(lat,lng);
+        courier = new google.maps.Marker({
+            position: latlng,
             map: map,
             title: 'Curbtome',
-            icon:image
+            icon:'http://google-maps-icons.googlecode.com/files/cycling.png'
         }); 
-        // while(1){
-          setTimeout(function(){
-            marker.setPosition(new google.maps.LatLng(lat+3,lng++));
-          },1000)
-        // }
+      }
+
+      function setCourierLocation( lat, lng ){
+        var latlng = new google.maps.LatLng(lat,lng);
+        courier.setPosition(latlng);
+      }
+
+
+      function codeAddress( address ) {
+        geocoder.geocode( { 'address': address}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            map.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+                map: map,
+                position: results[0].geometry.location
+            });
+          } else {
+            alert("Geocode was not successful for the following reason: " + status);
+          }
+        });
       }
       //Test loop for updating the location
       google.maps.event.addDomListener(window, 'load', initialize);
     </script>
   </head>
   <body>
-    {{ deliveryObject }}
-    <br>
-    {{ backgroundInfo }}
+    
     <div id="map-canvas"></div>
     
   </body>

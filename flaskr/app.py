@@ -36,6 +36,12 @@ def delivery_quote():
     quote = postmates.delivery_quote(pickup, dropoff)
     return json.dumps(quote)
 
+@app.route("/delivery_location",methods=["GET"])
+def delivery_location():
+    deliveryID = request.args.get("id", '')
+    location = postmates.delivery_location(deliveryID)
+    return json.dumps(location)
+
 @app.route("/delivery_progress",methods=["POST"])
 def delivery_progress():
     req = request.form
@@ -54,6 +60,8 @@ def delivery_progress():
     info['manifest'] = req.getlist('manifest')[0]
     delivery = postmates.delivery_place(info)
     return render_template("delivery.html", backgroundInfo = info, deliveryObject = delivery)
+
+
 
 @app.route("/test")
 def test():
