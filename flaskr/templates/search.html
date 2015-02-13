@@ -34,9 +34,9 @@
       }
       $(document).ready(function(){
         //Making sure the correct information is available when placing delivery/allowing navigation
-        $("#quote").unbind("click");
+        $("#placeDelivery").unbind("click");
         $("#contactOwner").unbind("click");
-        $("#quote").click(function(){
+        $("#placeDelivery").click(function(){
           $("#item").val(item);
           $("#contactModal").modal('hide');
           $("#deliveryModal").modal(options);
@@ -219,7 +219,7 @@
             </div>
 
             <div class="modal-footer">
-                <button id="quote" type="button" class="btn btn-default" >Quote</button>
+                <button id="placeDelivery" type="button" class="btn btn-default" >Place Delivery</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -252,7 +252,7 @@
             </div>
             <div class="modal-footer">
                 <button id="contactOwner" type="button" class="btn btn-default">Contact Owner</button>
-                <input type="submit" value="Submit" placeholder="Dropoff Phone" class="btn btn-default" />
+                <button id="quote" type="button" class="btn btn-default">Quote</button>
             </div>
             </form>
         </div>
