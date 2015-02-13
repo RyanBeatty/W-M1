@@ -32,9 +32,10 @@
         height: 55px;
       }
       .jumbotron {
+        margin-top: 20px;
+        margin-bottom: 20px;
         height: 140px;
         background-color: white;
-        display: inline-block;
       }
       #title {
         text-align: center;
@@ -70,7 +71,14 @@
         border-radius: 5px;
       }
       #location {
-        margin-top: -10px;
+        height: 50px;
+        width:  500px;
+        display: inline-block;
+      }
+      #search-box {
+        height: 50px;
+        width:  500px;
+        display: inline-block;
       }
       #deliver-button {
         margin-top: -25px;
@@ -80,8 +88,8 @@
     <div class="container">
       <div  class="jumbotron">
           <form action="/search" method="GET">
-            <input type="text" class="form-control" name="site" id="exampleInputEmail1" placeholder="Location" value="{{ current_site }}" required>
-            <input type="text" class="form-control" name="term" id="exampleInputEmail1" placeholder="Search for ...">
+            <input type="text" class="form-control" name="site" id="location" placeholder="Location" value="{{ current_site }}" required>
+            <input type="text" class="form-control" name="term" id="search-box" placeholder="Search for ...">
           </form>
       </div>
 
