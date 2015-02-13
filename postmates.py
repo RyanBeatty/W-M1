@@ -8,22 +8,20 @@ def delivery_quote(pickup, dropoff):
     r = requests.post(url, data=payload, headers=headers)
     return r.json()
 
-def delivery_place( quote_id ):
+def delivery_place( delivery_info ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
-    payload = { 'manifest':'a box of kittens', \
-     'manifest_reference' : 'Optional ref', \
-     'pickup_name': 'The Warehouse',\
-     'pickup_address':'202 McAllister St. San Francisco, CA', \
-     'pickup_phone_number':'555-555-5555',\
-     'pickup_business_name':'Optional nameee',\
-     'pickup_notes':'Optional notes',\
-     'dropoff_name':'Alice',\
-     'dropoff_phone_number':'232-323-2222',\
-     'dropoff_business_name':'Optional Business name',\
-     'dropoff_address':'101 Market St. San Francisco, CA',\
-     'quote_id':quote_id }
-    r = requests.post(url, data=payload, headers=headers)
+    # payload = { 
+    #  'manifest': item_name, \
+    #  'pickup_name': pickup_name,\
+    #  'pickup_address':'202 McAllister St. San Francisco, CA', \
+    #  'pickup_phone_number':'555-555-5555',\
+    #  'dropoff_name':'Alice',\
+    #  'dropoff_phone_number':'232-323-2222',\
+    #  'dropoff_address':'101 Market St. San Francisco, CA',\
+    #  'quote_id':quote_id 
+    # }
+    r = requests.post(url, data=delivery_info, headers=headers)
     return r.json()
 
 # Lists all the deliveries ever placed by a user
