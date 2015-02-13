@@ -3,6 +3,12 @@
   <head>
     <title>Delivery Progress</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <link href="../static/Flat-UI/dist/css/vendor/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="../static/Flat-UI/dist/css/flat-ui.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../static/Flat-UI/dist/img/favicon.ico">
+
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <meta charset="utf-8">
     <style>
@@ -13,9 +19,10 @@
       }
       #map-canvas{
         height:100%;
-        width:50%;
+        width:100%;
         float:right;
       }
+
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
     <script>
@@ -25,6 +32,7 @@
       var marker;
       var courier;
       var geocoder;
+      '{{ deliveryObject.id }}'
       console.log('{{ deliveryObject.id }}');
       console.log('{{ backgroundInfo }}');
       var deliveryID = '{{deliveryObject.id}}';
@@ -36,7 +44,7 @@
 
         myLatlng = new google.maps.LatLng(lat,lng);
         var mapOptions = {
-          zoom: 13,
+          zoom: 12,
           center: new google.maps.LatLng(lat,lng)
         };
         var image = '../static/img/just_the_couch_small.png';
@@ -46,6 +54,12 @@
         codeAddress('{{ backgroundInfo.pickup_address }}');
         codeAddress('{{ backgroundInfo.dropoff_address }}');
         // while(1){
+        var options = {
+            "backdrop" : "static"
+        }
+        $("#initialModal").modal(options);
+        $("#initialModal > .modal-dialog").css("z-index", "1500");
+
         setInterval(function(){
             $.ajax({
             url: '/delivery_location',
@@ -61,6 +75,7 @@
               if(data){
                 if(!courier){
                   addCourier(data['location']['lat'], data['location']['lng']);
+                  $("#initialModal").modal('hide');
                 }else{
                   setCourierLocation(data['location']['lat'], data['location']['lng']);
                 }
@@ -105,8 +120,34 @@
     </script>
   </head>
   <body>
-    
+  <div class="modal fade" id="initialModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Courier en route<span class="options">.</span></h4>
+            </div>
+        </div>
+    </div>
+  </div>
+
     <div id="map-canvas"></div>
-    
+    <script src="../static/dist/js/vendor/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../static/dist/js/flat-ui.min.js"></script>
+
+    <script src="../static/docs/assets/js/application.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../static/js/typed.js"> </script>
+
+    <script>
+        $(function(){
+            $(".options").typed({
+                strings: ["..", "...", "."],
+                typeSpeed: 30
+            });
+        });
+    </script>
+
   </body>
 </html>
