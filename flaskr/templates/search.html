@@ -34,6 +34,7 @@
       .jumbotron {
         height: 140px;
         background-color: white;
+        display: inline-block;
       }
       #title {
         text-align: center;
@@ -56,12 +57,28 @@
         text-overflow: ellipsis;
         height: 20px;
         overflow: hidden;
-
+        margin-top: -15px;
+        padding-bottom: 20px;
+      }
+      #product-image{
+        width:auto;
+        height:auto;
+        max-width:260px;
+        max-height:200px;
+        margin-left: -12px;
+        margin-top: -12px;
+        border-radius: 5px;
+      }
+      #location {
+        margin-top: -10px;
+      }
+      #deliver-button {
+        margin-top: -25px;
       }
     </style>
     <img id="logo" src="../static/img/logo.png" />
     <div class="container">
-      <div class="jumbotron">
+      <div  class="jumbotron">
           <form action="/search" method="GET">
             <input type="text" class="form-control" name="site" id="exampleInputEmail1" placeholder="Search for ...">
           </form>
@@ -70,17 +87,17 @@
     </div> <!-- /container -->
 
     <div class="container">
-      <h4>Location: Hampton Roads, VA</h4>
+      
       <div class="row">
         <div class="col-lg-12">
           <div class="row">
             {% for n in index_list %}
             <div id="tile" class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
               <div class="tile">
-                <img src="{{n.picture if n.picture else '../static/graphics/just_the_couch.png'}}" alt="Compas" class="tile-image big-illustration">
+                <img id="product-image" src="{{n.picture if n.picture else '../static/graphics/just_the_couch.png'}}" alt="Compas" class="tile-image big-illustration">
                 <h3 class="tile-title">{{n.title}}</h3>
                 <p id= "text-shorten">{{n.summary}}</p>
-                <a class="typeform-share btn btn-primary btn-large btn-block" href="https://curbtome.typeform.com/to/sB9lN8" data-mode="1" target="_blank">Deliver Now!</a>
+                <a id="deliver-button" class="typeform-share btn btn-primary btn-large btn-block" href="https://curbtome.typeform.com/to/sB9lN8" data-mode="1" target="_blank">Deliver Now!</a>
                 <script>(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'share.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}id=id+'_';if(!gi.call(d,id)){qs=ce.call(d,'link');qs.rel='stylesheet';qs.id=id;qs.href=b+'share-button.css';s=gt.call(d,'head')[0];s.appendChild(qs,s)}})()</script>
               </div>
             </div>
