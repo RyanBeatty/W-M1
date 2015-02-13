@@ -15,6 +15,76 @@
       <script src="../../dist/js/vendor/html5shiv.js"></script>
       <script src="../../dist/js/vendor/respond.min.js"></script>
     <![endif]-->
+    <style>
+      #logo {
+        width: 25%;
+        position: absolute;
+        top: 4%;
+        left: 6%;
+      }
+      body {
+        min-height: 2000px;
+        padding-top: 70px;
+      }
+      body.modal-open {
+          overflow: hidden;
+      }
+      .form-control {
+        margin-top: 2%;
+        font-size: 100%;
+        height: 55%;
+      }
+      .jumbotron {
+        margin-top: 1%;
+        margin-bottom: 1%;
+        height: 140%;
+        background-color: white;
+        text-align: center;
+      }
+      #title {
+        text-align: center;
+      }
+      #tile {
+        height: 450%;
+        overflow: hidden;
+      }
+      .tile {
+        height: 410px;
+      }
+      #text-shorten {
+        text-overflow: ellipsis;
+        height: 20%;
+        overflow: hidden;
+        margin-top: 5%
+
+      }
+      .tile-title {
+        text-overflow: ellipsis;
+        height: 1%;
+        overflow: hidden;
+        padding-bottom: 10%;
+      }
+      #product-image{
+        height: 50%;
+        width: 111%;
+        margin-left: -5%;
+        margin-top: -7%;
+        border-radius: 4%;
+      }
+      #location {
+        height: 40%;
+        width:  40%;
+        display: inline-block;
+      }
+      #search-box {
+        height: 40%;
+        width:  40%;
+        display: inline-block;
+      }
+      #deliver-button {
+        margin-top: 10%;
+      }
+    </style>
     <script>
 
     function populateEmailLinks(inputUrl){
@@ -38,13 +108,15 @@
           $("#contactModal").modal('hide');
           $("#deliveryModal").modal(options);
           $("#deliveryModal > .modal-dialog").css("z-index", "1500");
+          // $('body').addClass("modal-open");
+          // $("body").css({'overflow':'hidden'});
         });
         $("#contactOwner").click(function(){
           $("#deliveryModal").modal('hide');
           populateEmailLinks(inputUrl);
           $("#contactModal").modal(options);
           $("#contactModal > .modal-dialog").css("z-index", "1500");
-        })
+        });
 
         $.ajax({
           url: '/item_info',
@@ -114,76 +186,6 @@
       });
     }
     </script>
-    <style>
-         #logo {
-        width: 25%;
-        position: absolute;
-        top: 4%;
-        left: 6%;
-      }
-      body {
-        min-height: 2000px;
-        padding-top: 70px;
-      }
-      body.modal-open {
-          overflow: hidden;
-      }
-      .form-control {
-        margin-top: 2%;
-        font-size: 100%;
-        height: 55%;
-      }
-      .jumbotron {
-        margin-top: 1%;
-        margin-bottom: 1%;
-        height: 140%;
-        background-color: white;
-        text-align: center;
-      }
-      #title {
-        text-align: center;
-      }
-      #tile {
-        height: 450%;
-        overflow: hidden;
-      }
-      .tile {
-        height: 410px;
-      }
-      #text-shorten {
-        text-overflow: ellipsis;
-        height: 20%;
-        overflow: hidden;
-        margin-top: 5%
-
-      }
-      .tile-title {
-        text-overflow: ellipsis;
-        height: 1%;
-        overflow: hidden;
-        padding-bottom: 10%;
-      }
-      #product-image{
-        height: 50%;
-        width: 111%;
-        margin-left: -5%;
-        margin-top: -7%;
-        border-radius: 4%;
-      }
-      #location {
-        height: 40%;
-        width:  40%;
-        display: inline-block;
-      }
-      #search-box {
-        height: 40%;
-        width:  40%;
-        display: inline-block;
-      }
-      #deliver-button {
-        margin-top: 10%;
-      }
-    </style>
     <img id="logo" src="../static/img/logo.png" />
     <div class="container">
       <div  class="jumbotron">
