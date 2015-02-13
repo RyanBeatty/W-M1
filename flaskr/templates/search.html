@@ -27,16 +27,16 @@
       $("#aolLink").attr({'href':'http://mail.aol.com/mail/compose-message.aspx?to=kbffz-4887774153%40sale.craigslist.org&subject=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body='+inputUrl});
     }
 
-    
+
     function showTypeform(inputUrl, item){
       var options = {
           "backdrop" : "static"
       }
       $(document).ready(function(){
         //Making sure the correct information is available when placing delivery/allowing navigation
-        $("#placeDelivery").unbind("click");
+        $("#quote").unbind("click");
         $("#contactOwner").unbind("click");
-        $("#placeDelivery").click(function(){
+        $("#quote").click(function(){
           $("#item").val(item);
           $("#contactModal").modal('hide');
           $("#deliveryModal").modal(options);
@@ -47,7 +47,6 @@
           populateEmailLinks(inputUrl);
           $("#contactModal").modal(options);
           $("#contactModal > .modal-dialog").css("z-index", "1500");
-
         })
 
         $.ajax({
@@ -60,20 +59,19 @@
           },
           dataType: 'json',
           success: function(data) {
-            console.log("success")
-            console.log(data)
+            // console.log("success")
+            // console.log(data)
             address = data['address']
-            
             var coordinates = data['coordinates'];
             var lat = coordinates['lat'];
             var lng = coordinates['lng']
             if(lat && lng){
               newAddress = getAddressFromLatLng(lat,lng, item, inputUrl);
-              console.log("newAddress")
-              console.log(newAddress)
+              // console.log("newAddress")
+              // console.log(newAddress)
               if(newAddress){
                 address = newAddress;
-                console.log(address)
+                // console.log(address)
               }
             }else{
               if(!address){
@@ -221,7 +219,7 @@
             </div>
 
             <div class="modal-footer">
-                <button id="placeDelivery" type="button" class="btn btn-default" >Place Delivery</button>
+                <button id="quote" type="button" class="btn btn-default" >Quote</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>

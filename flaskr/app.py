@@ -1,6 +1,7 @@
 
 from flask import Flask, render_template, request
 import rss_scraper
+import postmates
 import json
 
 app = Flask(__name__)
@@ -26,6 +27,10 @@ def item_info():
     info = rss_scraper.getItemData(request.args.get("url","http://auburn.craigslist.org/zip/4877117310.html"))
     return json.dumps(info)
 
+@app.route("/delivery_quote",methods=["GET"])
+def delivery_quote():
+    pickup = request.args.get("pickupAddress")
+    delivery = request.args.get("deliveryAddress")
 
 if __name__ == "__main__":
 	app.debug = True
