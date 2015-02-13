@@ -1,6 +1,7 @@
 
 from flask import Flask, render_template
 import rss_scraper
+import json
 
 app = Flask(__name__)
 
@@ -11,7 +12,8 @@ def index():
 
 @app.route("/item_list", methods=["GET"])
 def item_list():
-	return "hello world"
+	items = rss_scraper.parse_rss_feed("norfolk")
+	return json.dumps(items)
 
 if __name__ == "__main__":
 	app.debug = True
