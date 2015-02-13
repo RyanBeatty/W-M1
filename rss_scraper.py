@@ -16,10 +16,6 @@ def parse_item(item):
 	result['url'] = item['dc_source']
 	result['title'] = item['title']
 	result['summary'] = item['summary']
-	result['summary'] = item['summary']
-	if len(item['summary']) > SUMMARY_LIMIT:
-		result['summary'] = item['summary'][:SUMMARY_LIMIT]
-		result['summary'] += '...'
 	result['picture'] = None
 	if item.get('enc_enclosure'):
 		result['picture'] = item['enc_enclosure'].get('resource')
