@@ -8,7 +8,7 @@ def delivery_quote(pickup, dropoff):
     r = requests.post(url, data=payload, headers=headers)
     return r.json()
 
-def deliveryPlace( quote_id ):
+def delivery_place( quote_id ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     payload = { 'manifest':'a box of kittens', \
@@ -27,14 +27,14 @@ def deliveryPlace( quote_id ):
     return r.json()
 
 # Lists all the deliveries ever placed by a user
-def deliveryListAll():
+def delivery_list_all():
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     r = requests.get(url, data={}, headers=headers)
     return r.json()
 
 # Lists ongoing deliveries for a given user
-def deliveryListOngoing():
+def delivery_list_ongoing():
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries?filter=ongoing'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     payload = {'filter':'ongoing'}
@@ -42,14 +42,14 @@ def deliveryListOngoing():
     return r.json()
 
 # Show details of a given delivery, USE THIS FOR STATUS/LAT/LNG AS WELL
-def deliveryDetails( delivery_id ):
+def delivery_details( delivery_id ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+delivery_id
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     r = requests.get(url, data={}, headers=headers)
     return r.json()
 
 # Return the current location of a delivery
-def deliveryLocation( delivery_id ):
+def delivery_location( delivery_id ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+delivery_id
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     r = requests.get(url, data={}, headers=headers)
@@ -60,18 +60,18 @@ def deliveryLocation( delivery_id ):
         return resp['courier']
 
 # Note: deliveries can only be cancelled prior to pickup
-def deliveryCancel( delivery_id ):
+def delivery_cancel( delivery_id ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+ delivery_id + '/cancel'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     r = requests.post(url, data={}, headers=headers)
     return r.json()
 
-def deliveryDeleteAll():
+def delivery_delete_all():
     for element in deliveryListAll()["data"]:
         deliveryCancel(element['id'])
 
 
-def deliveryReturn():
+def delivery_return():
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+ delivery_id + '/return'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     r = requests.post(url, data={}, headers=headers)
