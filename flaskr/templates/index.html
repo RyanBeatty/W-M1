@@ -12,6 +12,8 @@
     <link href="../static/Flat-UI/dist/css/flat-ui.css" rel="stylesheet">
 
     <link rel="shortcut icon" href="../static/Flat-UI/dist/img/favicon.ico">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
     <!--[if lt IE 9]>
@@ -19,94 +21,100 @@
       <script src="../../dist/js/vendor/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body>
 
-    <style>
+   <style>
+      body {
+        padding: 0;
+        margin: 0;
+        background-size: 100%;
+        background-attachment: fixed;
+        background-image: url('../static/img/campus.jpg');
+
+        background: url('../static/img/campus.jpg') no-repeat center center fixed; 
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      }
       #logo {
         width: 280px;
         position: absolute;
         top: 40px;
         left: 60px;
       }
-      body {
-        min-height: 2000px;
-        padding-top: 70px;
-      }
-      .form-control {
-        margin-top: 25px;
+      #title {
+        text-align: left;
+        color: #fff;
+        background-color: rgba(0,0,0,0);
+        font-family: "Lato",Helvetica,Arial,sans-serif;
+        font-weight: 300;
         font-size: 30px;
-        height: 55px;
       }
       .jumbotron {
-        height: 140px;
-        background-color: white;
+        height: 200px;
+        margin-top: 200px;
+        background-color: rgba(0,0,0,0.4);
+        font-weight: 300;
       }
-      #title {
-        text-align: center;
+      .form-control {
+        text-align: left;
+        color: #fff;
+        font-size: 30px;
+        height: 60px;
+        background-color: rgba(0,0,0,0); 
+        margin-top: -20px;
+      }
+      .typed-cursor {
+        font-family: 'Montserrat', sans-serif;
+        display: inline-block;
+        font-size: 30px;
+        color: #48C9B0;
+        margin-bottom: 24px;
+        margin-top: 0;
+        opacity: 1;
+        -webkit-animation: blink 1.2s infinite;
+        -moz-animation: blink 1.2s infinite;
+        animation: blink 1.2s infinite;
+      }
+      /*Animated Blinker */
+      @keyframes blink{
+          0% { opacity:1; }
+          50% { opacity:0; }
+          100% { opacity:1; }
+      }
+      @-webkit-keyframes blink{
+          0% { opacity:1; }
+          50% { opacity:0; }
+          100% { opacity:1; }
+      }
+      @-moz-keyframes blink{
+          0% { opacity:1; }
+          50% { opacity:0; }
+          100% { opacity:1; }
       }
     </style>
-    <img id="logo" src="../static/img/just_the_couch.png" />
-    <div class="container">
+
+  <body>
+
+    <!-- Logo -->
+    <img id="logo" src="../static/graphics/white_logo.png" />
+
+     <div class="container">
+
+      <!-- Main component for a primary marketing message or call to action -->
+      
 
       <div class="jumbotron">
         <div class="form-group">
-          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Search for free shit...">
+          <p id="title">CurbToMe is a service to magically scour craigslist and deliver  <span class="options"></span></p>
+          <form action="/search" method="GET">
+            <input type="text" class="form-control" name="site" id="exampleInputEmail1" placeholder="Where are you?">
+          </form>
         </div>
       </div>
 
     </div> <!-- /container -->
 
-    <div class="container">
-      <h4>Location: Hampton Roads, VA</h4>
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="row">
-          
-            {% for n in index_list %}
-            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
-              <div class="tile">
-                <img src="{{n.picture if n.picture else '../static/graphics/just_the_couch.png'}}" alt="Compas" class="tile-image big-illustration">
-                <h3 class="tile-title">{{n.title}}</h3>
-                <p>{{n.summary}}</p>
-                <a class="typeform-share btn btn-primary btn-large btn-block" href="https://curbtome.typeform.com/to/sB9lN8" data-mode="1" target="_blank">Deliver Now!</a>
-                <script>(function(){var qs,js,q,s,d=document,gi=d.getElementById,ce=d.createElement,gt=d.getElementsByTagName,id='typef_orm',b='https://s3-eu-west-1.amazonaws.com/share.typeform.com/';if(!gi.call(d,id)){js=ce.call(d,'script');js.id=id;js.src=b+'share.js';q=gt.call(d,'script')[0];q.parentNode.insertBefore(js,q)}id=id+'_';if(!gi.call(d,id)){qs=ce.call(d,'link');qs.rel='stylesheet';qs.id=id;qs.href=b+'share-button.css';s=gt.call(d,'head')[0];s.appendChild(qs,s)}})()</script>
-              </div>
-            </div>
-            {% endfor %}
-
-<!-- 
-            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
-              <div class="tile">
-                <img src="../static/img/toilet.jpg" alt="Compas" class="tile-image big-illustration">
-                <h3 class="tile-title">Twin Toilets</h3>
-                <p>They are sitting in the front yard and need to be gone ASAP.</p>
-                <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Deliver Now</a>
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
-              <div class="tile">
-                <img src="../static/img/chair.jpg" alt="Compas" class="tile-image big-illustration">
-                <h3 class="tile-title">Chair</h3>
-                <p>Large desk chair has a tear in the seat! </p>
-                <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Deliver Now</a>
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
-              <div class="tile">
-                <img src="../static/Flat-UI/img/icons/svg/ribbon.svg" alt="ribbon" class="tile-hot-ribbon">
-                <img src="../static/img/tv.jpg" alt="Compas" class="tile-image big-illustration">
-                <h3 class="tile-title">46" TV!!</h3>
-                <p>Big and totally free, come and get 'er!</p>
-                <a class="btn btn-primary btn-large btn-block" href="http://designmodo.com/flat">Deliver Now</a>
-              </div>
-            </div>
-             -->
-          </div> <!-- /row -->
-        </div>
-      </div> <!-- /row -->
-    </div><!-- /.container -->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="../static/dist/js/vendor/jquery.min.js"></script>
@@ -116,4 +124,13 @@
     <script src="../static/docs/assets/js/application.js"></script>
 
   </body>
+      <script type="text/javascript" src="../static/js/typed.js"> </script>
+<script>
+    $(function(){
+        $(".options").typed({
+            strings: ["couches.", "tvs.", "fridges.", "mattresses.","partners.", "trucks.", "babes.",  "free shit."],
+            typeSpeed: 30
+        });
+    });
+</script>
 </html>
