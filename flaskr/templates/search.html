@@ -61,11 +61,10 @@
     </style>
     <img id="logo" src="../static/img/logo.png" />
     <div class="container">
-
       <div class="jumbotron">
-        <div class="form-group">
-          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Search for free shit...">
-        </div>
+          <form action="/search" method="GET">
+            <input type="text" class="form-control" name="site" id="exampleInputEmail1" placeholder="Search for ...">
+          </form>
       </div>
 
     </div> <!-- /container -->
