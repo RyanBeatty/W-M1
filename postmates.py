@@ -1,40 +1,38 @@
 import requests
 import json
 
-def deliveryQuote(pickup, dropoff):
+def delivery_quote(pickup, dropoff):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/delivery_quotes'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     payload = { 'pickup_address': pickup, 'dropoff_address': dropoff}
     r = requests.post(url, data=payload, headers=headers)
     return r.json()
 
-def deliveryPlace( quote_id ):
+def delivery_place( delivery_info ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
-    payload = { 'manifest':'a box of kittens', \
-     'manifest_reference' : 'Optional ref', \
-     'pickup_name': 'The Warehouse',\
-     'pickup_address':'202 McAllister St. San Francisco, CA', \
-     'pickup_phone_number':'555-555-5555',\
-     'pickup_business_name':'Optional nameee',\
-     'pickup_notes':'Optional notes',\
-     'dropoff_name':'Alice',\
-     'dropoff_phone_number':'232-323-2222',\
-     'dropoff_business_name':'Optional Business name',\
-     'dropoff_address':'101 Market St. San Francisco, CA',\
-     'quote_id':quote_id }
-    r = requests.post(url, data=payload, headers=headers)
+    # payload = { 
+    #  'manifest': item_name, \
+    #  'pickup_name': pickup_name,\
+    #  'pickup_address':'202 McAllister St. San Francisco, CA', \
+    #  'pickup_phone_number':'555-555-5555',\
+    #  'dropoff_name':'Alice',\
+    #  'dropoff_phone_number':'232-323-2222',\
+    #  'dropoff_address':'101 Market St. San Francisco, CA',\
+    #  'quote_id':quote_id 
+    # }
+    r = requests.post(url, data=delivery_info, headers=headers)
     return r.json()
 
 # Lists all the deliveries ever placed by a user
-def deliveryListAll():
+def delivery_list_all():
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     r = requests.get(url, data={}, headers=headers)
     return r.json()
 
 # Lists ongoing deliveries for a given user
-def deliveryListOngoing():
+def delivery_list_ongoing():
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries?filter=ongoing'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     payload = {'filter':'ongoing'}
@@ -42,14 +40,14 @@ def deliveryListOngoing():
     return r.json()
 
 # Show details of a given delivery, USE THIS FOR STATUS/LAT/LNG AS WELL
-def deliveryDetails( delivery_id ):
+def delivery_details( delivery_id ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+delivery_id
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     r = requests.get(url, data={}, headers=headers)
     return r.json()
 
 # Return the current location of a delivery
-def deliveryLocation( delivery_id ):
+def delivery_location( delivery_id ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+delivery_id
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     r = requests.get(url, data={}, headers=headers)
@@ -60,18 +58,18 @@ def deliveryLocation( delivery_id ):
         return resp['courier']
 
 # Note: deliveries can only be cancelled prior to pickup
-def deliveryCancel( delivery_id ):
+def delivery_cancel( delivery_id ):
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+ delivery_id + '/cancel'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     r = requests.post(url, data={}, headers=headers)
     return r.json()
 
-def deliveryDeleteAll():
+def delivery_delete_all():
     for element in deliveryListAll()["data"]:
         deliveryCancel(element['id'])
 
 
-def deliveryReturn():
+def delivery_return():
     url = 'https://api.postmates.com/v1/customers/cus_KAgGPlHZ6tZmzF/deliveries/'+ delivery_id + '/return'
     headers = { 'Authorization':'Basic NWUzODM3Y2MtNzM0MS00MzRkLThlNGUtNTA2MjYwYTQyMjVkOg==',"Content-type": "application/x-www-form-urlencoded","Accept": "text/plain" }
     r = requests.post(url, data={}, headers=headers)
