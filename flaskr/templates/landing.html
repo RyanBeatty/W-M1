@@ -29,10 +29,15 @@
         background-size: 100%;
         background-attachment: fixed;
         background-image: url('../static/img/campus.jpg');
-        background-repeat: no-repeat;
+
+        background: url('../static/img/campus.jpg') no-repeat center center fixed; 
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
       }
       #logo {
-        width: 220px;
+        width: 280px;
         position: absolute;
         top: 40px;
         left: 60px;
@@ -102,7 +107,9 @@
       <div class="jumbotron">
         <div class="form-group">
           <p id="title">CurbToMe is a service to magically scour craigslist and deliver  <span class="options"></span></p>
-          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Where are you?">
+          <form action="index.html" method="GET">
+            <input type="text" class="form-control" name="search" id="exampleInputEmail1" placeholder="Where are you?">
+          </form>
         </div>
       </div>
 
