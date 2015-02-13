@@ -36,13 +36,24 @@ def delivery_quote():
     quote = postmates.delivery_quote(pickup, dropoff)
     return json.dumps(quote)
 
-@app.route("/delivery_progress",methods=["GET"])
+@app.route("/delivery_progress",methods=["POST"])
 def delivery_progress():
-    info = request.args
-    quote = postmates.delivery_quote(info['pickup_address'], info['dropoff_address'])
-    info['quote_id'] = quote['quote_id']
+    info = {}
+    quote = postmates.delivery_quote(request.form['pickup_address'], request.form['dropoff_address'])
+    info['quote_id'] = quote['id']
+    print(info)
+    info['pickup_name'] = request.form['pickup_name']
+
+    info['pickup_address'] = request.form['pickup_address']
+    print("HIIII")
+    info['pickup_phone_number'] = request.form['pickup_phone_number']
+
+    info['dropoff_name'] = request.form['dropoff_name']
+    info['dropoff_phone_number'] = request.form['dropoff_phone_number']
+    info['dropoff_address'] = request.form['dropoff_address']
+    info['manifest'] = request.form['manifest']
     delivery = postmates.delivery_place(info)
-    return render_template("delivery.html")
+    return render_template("delivery.html", deliveryObject = delivery)
 
 @app.route("/test")
 def test():

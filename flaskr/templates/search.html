@@ -86,6 +86,9 @@
       }
     </style>
     <script>
+    var options = {
+        "backdrop" : "static"
+    }
 
     function populateEmailLinks(inputUrl){
       $("#gmailLink").attr({'href':'https://mail.google.com/mail/?view=cm&fs=1&to=kbffz-4887774153%40sale.craigslist.org&su=Curb%20Alert%3A%20Double%20Vanity%20Countertop%20with%20Faucets&body=%0A%0A'+inputUrl});
@@ -109,15 +112,27 @@
           dataType: 'json',
           success: function( data ){
             console.log(data)
+            quoteID = data['id'];
+            fee = data['fee'];
+            duration = data['duration'];
+            id = data['id'];
+            if(data['kind'] == 'error'){
+              window.alert('Sorry that area isn\'t available for delivery');
+            }else{
+              $("#quotePrice").html("$" + fee * 0.01);
+              $("#quoteETA").html(duration + " minutes");
+              $("#contactModal").modal('hide');
+              $("#deliveryModal").modal('hide');
+              $("#quoteModal").modal(options);
+              $("#quoteModal > .modal-dialog").css("z-index", "1500");
+            }
           }
       });
     }
 
 
     function showTypeform(inputUrl, item){
-      var options = {
-          "backdrop" : "static"
-      }
+      
       $(document).ready(function(){
         //Making sure the correct information is available when placing delivery/allowing navigation
         $("#placeDelivery").unbind("click");
@@ -140,6 +155,9 @@
         $("#quote").click(function(){
           getQuote($("#pAddr").val(), $("#dAddr").val());
         });
+        $("#submitDelivery").click(function(){
+          $("#formSubmit").submit();
+        })
 
         $.ajax({
           url: '/item_info',
@@ -257,11 +275,14 @@
             </div>
             <div class="modal-body">
               <div>Delivery Price:</div>
-              <h4 id="price"></h4>
-              <br><br>
+              <h4 id="quotePrice"></h4>
+              <br>
+              <div>ETA:</div>
+              <h4 id="quoteETA"></h4>
+              <br>
             </div>
             <div class="modal-footer">
-                <button id="placeDelivery" type="button" class="btn btn-default" >Submit</button>
+                <button id="submitDelivery" type="button" class="btn btn-default" >Submit</button>
             </div>
         </div>
     </div>
@@ -274,16 +295,16 @@
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
             <h4 class="modal-title" id="myModalLabel">Submit for Delivery</h4>
             </div>
-            <form action="/order" method="POST">
+            <form id="formSubmit" action="/delivery_progress" method="POST" enctype="multipart/form-data">
             <div class="modal-body">
               <div class="form-group">
-                <input id="item" name="item" type="text" value="" placeholder="Item" class="form-control" required/>
+                <input id="item" name="manifest" type="text" value="" placeholder="Item" class="form-control" required/>
                 <input name="pickup_name" type="text" value="" placeholder="Pickup Name" class="form-control" required/>
-                <input id="pAddr" name="pickup_address" type="text" value="" placeholder="Pickup Address" class="form-control" />
-                <input name="pickup_phone" type="text" value="" placeholder="Pickup Phone" class="form-control" />
-                <input name="dropoff_name" type="text" value="" placeholder="Dropoff Name" class="form-control" />
-                <input id="dAddr" name="dropoff_address" type="text" value="" placeholder="Dropoff Address" class="form-control" />
-                <input name="dropoff_phone" type="text" value="" placeholder="Dropoff Phone" class="form-control" />
+                <input id="pAddr" name="pickup_address" type="text" value="" placeholder="Pickup Address" class="form-control" required/>
+                <input name="pickup_phone" type="text" value="" placeholder="Pickup Phone" class="form-control" required/>
+                <input name="dropoff_name" type="text" value="" placeholder="Dropoff Name" class="form-control" required/>
+                <input id="dAddr" name="dropoff_address" type="text" value="" placeholder="Dropoff Address" class="form-control" required/>
+                <input name="dropoff_phone" type="text" value="" placeholder="Dropoff Phone" class="form-control" required/>
               </div>
             </div>
             <div class="modal-body">
