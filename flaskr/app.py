@@ -36,6 +36,10 @@ def delivery_quote():
     quote = postmates.delivery_quote(pickup, dropoff)
     return json.dumps(quote)
 
+@app.route("/delivery_progress",methods=["GET"])
+def delivery_progress():
+    return render_template("delivery.html")
+
 if __name__ == "__main__":
 	app.debug = True
 	app.run(host='0.0.0.0')
